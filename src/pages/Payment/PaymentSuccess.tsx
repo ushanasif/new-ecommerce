@@ -1,0 +1,16 @@
+import { useParams } from 'react-router-dom'
+
+const PaymentSuccess = () => {
+  const {tranId} = useParams();
+
+  
+  return (
+    <div className="bg-slate-200 mt-24 w-full max-w-md mx-auto flex justify-center items-center flex-col p-4 m-2 rounded">
+      <img src={"https://res.cloudinary.com/dvzxjqtub/image/upload/v1754159622/success_t7pmsa.gif"} width={150} height={150} alt="success" />
+      <p className="text-green-600 font-bold text-xl">Payment Successful</p>
+      <p>Transaction ID : {tranId}</p>
+    </div>
+  )
+}
+
+export default PaymentSuccess
