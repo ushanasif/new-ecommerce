@@ -7,7 +7,7 @@ const PopularProducts = () => {
   const { allCategories, isCategoryLoading } = useDataHook();
   const [activeCategory, setActiveCategory] = useState<string>("");
   
-  const { data: productsRes, isLoading: loadingProducts } = useGetProductsQuery({limit: 10, category: activeCategory});
+  const { data: productsRes, isLoading: loadingProducts } = useGetProductsQuery({page: 1, limit: 10, category: activeCategory});
   const products = productsRes?.data?.data || [];
 
   useEffect(() => {
