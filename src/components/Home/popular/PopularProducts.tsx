@@ -1,4 +1,3 @@
-
 import useDataHook from "../../../redux/hooks/useDataHook";
 import { useGetProductsByCategoryQuery } from "../../../redux/features/product/productApi";
 import ProductCard from "./ProductCard";
@@ -16,27 +15,27 @@ const PopularProducts = () => {
   );
 
   if (isCategoryLoading) {
-    return <p className="text-center">Loading categories...</p>;
+    return <p className="text-center py-4">Loading categories...</p>;
   }
 
   if (!allCategories || allCategories.length === 0) {
-    return <p className="text-center">No categories found.</p>;
+    return <p className="text-center py-4">No categories found.</p>;
   }
 
   return (
     <div className="w-full bg-gray-50 py-6">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 text-center sm:text-left">
           Popular Products
         </h2>
 
-        {/* Category Tabs */}
-        <div className="flex space-x-6 border-b border-gray-300">
+        {/* Category Tabs - scrollable on mobile */}
+        <div className="flex space-x-4 sm:space-x-6 border-b border-gray-300 overflow-x-auto scrollbar-hide pb-2">
           {allCategories?.map((cat: any) => (
             <button
               key={cat._id}
               onClick={() => setActiveCategory(cat._id)}
-              className={`pb-2 text-sm font-medium transition-colors relative
+              className={`pb-2 text-sm sm:text-base font-medium transition-colors relative whitespace-nowrap
                 ${
                   activeCategory === cat._id
                     ? "text-blue-600"
@@ -53,15 +52,15 @@ const PopularProducts = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
           {loadingProducts ? (
-            <p>Loading products...</p>
+            <p className="col-span-full text-center text-gray-500">Loading products...</p>
           ) : filteredProducts?.products?.length ? (
             filteredProducts?.products?.map((product: any) => (
               <ProductCard key={product._id} product={product} />
             ))
           ) : (
-            <p className="text-gray-500">
+            <p className="col-span-full text-center text-gray-500">
               No products found for this category.
             </p>
           )}
