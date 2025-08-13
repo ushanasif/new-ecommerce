@@ -1,31 +1,22 @@
+import { memo } from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { IProduct } from "../../../redux/features/product/product.types";
 
+const ProductCard = ({ product }: { product: IProduct }) => {
+  const navigate = useNavigate();
 
+  const getOptimizedImageUrl = (originalUrl: string, width: number, height: number) => {
+    if (!originalUrl || !originalUrl.includes("cloudinary.com")) return originalUrl;
+    const uploadIndex = originalUrl.indexOf("/upload/");
+    if (uploadIndex === -1) return originalUrl;
 
+    const beforeUpload = originalUrl.substring(0, uploadIndex + 8);
+    const afterUpload = originalUrl.substring(uploadIndex + 8);
+    const transformations = `w_${width},h_${height},c_fill,f_auto,q_auto:low,dpr_auto`;
 
-const ProductCard = ({ product }: {product: IProduct}) => {
-    const navigate = useNavigate();
-
-    const getOptimizedImageUrl = (
-  originalUrl: string,
-  width: number,
-  height: number
-) => {
-  if (!originalUrl || !originalUrl.includes("cloudinary.com"))
-    return originalUrl;
-  const uploadIndex = originalUrl.indexOf("/upload/");
-  if (uploadIndex === -1) return originalUrl;
-
-  const beforeUpload = originalUrl.substring(0, uploadIndex + 8);
-  const afterUpload = originalUrl.substring(uploadIndex + 8);
-  const transformations = `w_${width},h_${height},c_fill,f_auto,q_auto:low,dpr_1.0`;
-
-  return `${beforeUpload}${transformations}/${afterUpload}`;
-};
-
- console.log(product);
+    return `${beforeUpload}${transformations}/${afterUpload}`;
+  };
 
   return (
     <div
@@ -35,13 +26,11 @@ const ProductCard = ({ product }: {product: IProduct}) => {
       {/* Image Section */}
       <div className="relative w-full aspect-[4/3] bg-gray-100">
         <img
-          src={
-            getOptimizedImageUrl(product.productImages[0], 250, 200) ||
-            "/placeholder.svg"
-          }
+          src={getOptimizedImageUrl(product.productImages[0], 250, 200) || "/placeholder.svg"}
           alt={product.productName}
           className="w-full h-full object-cover"
           loading="lazy"
+          decoding="async"
           onError={(e) => {
             e.currentTarget.src = "/placeholder.svg";
           }}
@@ -98,4 +87,4 @@ const ProductCard = ({ product }: {product: IProduct}) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);
